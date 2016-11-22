@@ -499,7 +499,6 @@ function updatePositions() {
     // console.log(items[i].basicLeft);
     //console.log(items[i].style.transform);
     // console.log(pxvalue);
-    window.animating = false;
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -510,6 +509,7 @@ function updatePositions() {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
     logAverageFrame(timesToUpdatePosition);
   }
+  window.animating = false;
 }
 
 window.animating = false;
@@ -523,7 +523,7 @@ function animationReadyCheck() {
   }
 }
 
-window.addEventListener('scroll', animationReadyCheck);
+window.addEventListener('scroll', updatePositions);
 // runs updatePositions on scroll
 
 // Generates the sliding pizzas when the page loads.
