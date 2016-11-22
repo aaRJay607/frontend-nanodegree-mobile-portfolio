@@ -406,13 +406,13 @@ var resizePizzas = function(size) {
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -494,6 +494,12 @@ function updatePositions() {
     var phase = Math.sin(docscroll + (i % 5));
     // console.log(phase);
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    // var pxvalue = items[i].basicLeft + 100 * phase;
+    // items[i].style.transform = "translateX("+(items[i].basicLeft + (100 * phase))+"px)";
+    // console.log(items[i].basicLeft);
+    //console.log(items[i].style.transform);
+    // console.log(pxvalue);
+    window.animating = false;
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -506,8 +512,19 @@ function updatePositions() {
   }
 }
 
+window.animating = false;
+
+function animationReadyCheck() {
+  // console.log(window.animating);
+  if (!window.animating) {
+    window.animating = true;
+    window.requestAnimationFrame(updatePositions);
+    // console.log("here");
+  }
+}
+
+window.addEventListener('scroll', animationReadyCheck);
 // runs updatePositions on scroll
-window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
@@ -522,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    document.getElementById("movingPizzas1").appendChild(elem);
   }
   updatePositions();
 });
