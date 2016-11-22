@@ -63,7 +63,7 @@ module.exports = function(grunt) {
           dest: 'build/views/images/'
         }]
       }
-    }
+    },
   });
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
