@@ -7,13 +7,13 @@ module.exports = function(grunt) {
           cwd: 'js/',
           src: '*.js',
           dest: 'build/js',
-          ext: '.min.js'
+          // ext: '.min.js'
         },{
           expand: true,
           cwd: 'views/js/',
           src: '*.js',
           dest: 'build/views/js',
-          ext: '.min.js'
+          // ext: '.min.js'
         }]
       }
     },
@@ -24,13 +24,13 @@ module.exports = function(grunt) {
           cwd: 'css/',
           src: '*.css',
           dest: 'build/css',
-          ext: '.min.css'
+          // ext: '.min.css'
         },{
           expand: true,
           cwd: 'views/css/',
           src: '*.css',
           dest: 'build/views/css',
-          ext: '.min.css'
+          // ext: '.min.css'
         }]
       }
     },

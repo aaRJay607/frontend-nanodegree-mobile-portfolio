@@ -435,7 +435,7 @@ var resizePizzas = function(size) {
         break;
     }
 
-    var randomPizzas = document.querySelectorAll(".randomPizzaContainer");
+    var randomPizzas = document.getElementsByClassName("randomPizzaContainer"); // Optimised
     for (var i=0; i<randomPizzas.length; i++) {
       randomPizzas[i].style.width = newwidth + "%";
       // console.log(randomPizzas[i].style.width);
@@ -453,8 +453,8 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+var pizzasDiv = document.getElementById("randomPizzas");        // Optimised
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -482,20 +482,19 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // Moves the sliding background pizzas based on scroll position
+// var items = document.querySelectorAll('.mover');
+var items = document.getElementsByClassName('mover');
+var lenOfItems;
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-
-  // var items = document.querySelectorAll('.mover');
-  var items = document.getElementsByClassName('mover');
   // var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
   var docscroll = (document.body.scrollTop / 1250);
-  for (var i = 0; i < items.length; i++) {
+  for (var i = 0; i < lenOfItems; i++) {
     var phase = Math.sin(docscroll + (i % 5));
     // console.log(phase);
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-    // var pxvalue = items[i].basicLeft + 100 * phase;
-    // items[i].style.transform = "translateX("+(items[i].basicLeft + (100 * phase))+"px)";
+    // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    items[i].style.transform = "translateX("+(items[i].basicLeft + 100 * phase)+"px)";
     // console.log(items[i].basicLeft);
     //console.log(items[i].style.transform);
     // console.log(pxvalue);
@@ -509,27 +508,28 @@ function updatePositions() {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
     logAverageFrame(timesToUpdatePosition);
   }
-  window.animating = false;
+  animate = false;
 }
 
-window.animating = false;
+var animate = false;
 
-function animationReadyCheck() {
+function animateCheck() {
   // console.log(window.animating);
-  if (!window.animating) {
-    window.animating = true;
-    window.requestAnimationFrame(updatePositions);
+  if (!animate) {
+    animate = true;
+    requestAnimationFrame(updatePositions);
     // console.log("here");
   }
 }
 
-window.addEventListener('scroll', updatePositions);
+window.addEventListener('scroll', animateCheck);
 // runs updatePositions on scroll
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
+  var movingPizzas1 = document.getElementById("movingPizzas1");
   for (var i = 0; i < 24; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
@@ -539,7 +539,8 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.getElementById("movingPizzas1").appendChild(elem);
+    movingPizzas1.appendChild(elem);
   }
+  lenOfItems = items.length;
   updatePositions();
 });
